@@ -8,6 +8,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/css/bootstrap.min.css" integrity="sha512-T584yQ/tdRR5QwOpfvDfVQUidzfgc2339Lc8uBDtcp/wYu80d7jwBgAxbyMh0a9YM9F8N3tdErpFI8iaGx6x5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./assets/css/styles.css" />
 
     <title>Weather Tracker</title>
@@ -31,8 +32,8 @@
                 <h2>
                     Search for a City:
                 </h2>
-                <input type="text" class="form-control-lg"/>
-                <button type="button" class="form-control-lg">Search</button>
+                <input class="form-control-lg" id="cityInput" type="text"/>
+                <button id="search-button" class="form-control-lg">Search</button>
             </div>
 
             <!-- Past City List -->
@@ -47,8 +48,9 @@
             <!-- Current Weather Conditions -->
             <div class="">
                 <h2>Current Weather Conditions</h2>
+
             </div>
-            <!-- Future Forecast -->
+            <!-- Five Day Forecast -->
             <h2>Five Day Forecast</h2>
             <div class="row">
                 <div class="col-2">
@@ -87,8 +89,11 @@
     </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.1/js/bootstrap.min.js" integrity="sha512-UR25UO94eTnCVwjbXozyeVd6ZqpaAE9naiEUBK/A+QDbfSTQFhPGj5lOR6d8tsgbBk84Ggb5A3EkjsOgPRPcKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="assets/js/script.js"></script>
+
+<script src="./assets/js/search.js"></script>
+<script src="./assets/js/script.js"></script>
 
 </body>
 </html>
