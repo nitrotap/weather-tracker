@@ -74,6 +74,10 @@ const singleCityButton = function(cityName) {
 
     cityButtonDivEl.appendChild(cityButton);
     cityButton.addEventListener("click", function () {
+        let a = document.getElementById("forecast-card");
+        if (a) {
+            clearCards();
+        }
         geoLocateRequest(cityName);
     })
 }
