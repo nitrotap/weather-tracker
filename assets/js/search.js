@@ -74,15 +74,3 @@ const fetchCityWeather = function(lat, lon) {
     });
 
 }
-
-
-
-let testFunction = function() {
-    console.log("hi");
-}
-
-// ready function - need to wrap things with "onload, wait"
-    // modules export whats in one file, then its available in another file
-    // clump by what its doing , and try avoid sharing between files. if not possible, then can use above
-    // set it up for each page to have set of javascript
-
