@@ -4,6 +4,7 @@
 
 .currentIcon {
     font-size: 3rem;
+    background-color: rgb(255, 255, 255, 0.3);
 }
 
 #current {
