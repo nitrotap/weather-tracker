@@ -271,5 +271,7 @@ const fiveDayForecast = function(data) {
 
 // on load
 cityButtonList();
+singleCityButton("Denver")
 geoLocateRequest("Denver");
+
 
