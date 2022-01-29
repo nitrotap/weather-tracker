@@ -1,11 +1,8 @@
 /*
  * js file for weather tracker
- * // make another function - pass json data into it, parse the object
- * // 2api requests, but need to wait until first finishes, then
  *
- * todo add uv index background colors
  *
-
+ *
  */
 
 let searchButtonEl = document.querySelector("#search-button");
@@ -20,7 +17,6 @@ searchButtonEl.addEventListener("click", function() {
         let a = document.getElementById("forecast-card");
         if (a) {
             clearCards();
-            console.log("hi")
         }
         geoLocateRequest(cityName);
     }
@@ -36,7 +32,6 @@ const clearCards = function() {
     for (let i = 0; i < 5 ; i++) {
         let a = document.getElementById("forecast-card");
         a.remove();
-        console.log(a)
     }
 }
 
@@ -46,7 +41,7 @@ const cityButtonList = function () {
 
 
     if (cityList) {
-        for (let i = 0; i < cityList.length; i++) {
+        for (let i = 1; i < cityList.length; i++) {
             let cityButton = document.createElement("button");
             cityButton.textContent = cityList[i];
             cityButton.className = "city-button rounded"
@@ -59,7 +54,6 @@ const cityButtonList = function () {
                 let a = document.getElementById("forecast-card");
                 if (a) {
                     clearCards();
-                    console.log("hi")
                 }
                 geoLocateRequest(cityList[i]);
 
@@ -219,7 +213,7 @@ const currentForecast = function (data) {
 
 const fiveDayForecast = function(data) {
     // start with tomorrow
-    console.log(data)
+    // console.log(data)
     for (let i = 1; i < 6; i++) {
         // let futureDayEl = document.querySelector("#day1")
         // consists of date, icon, temp, wind, humidity
