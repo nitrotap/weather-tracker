@@ -216,7 +216,9 @@ const fiveDayForecast = function(data) {
         // consists of date, icon, temp, wind, humidity
         // instead of current, it uses daily[0] - today, daily[1] is tomorrow
         let futureDayEl = document.createElement("div");
-        futureDayEl.className = "col-2 bg-dark text-light"
+        // futureDayEl.className = "col-2 bg-dark text-light"
+        futureDayEl.className = "col-12 col-sm-5 col-lg-2 bg-dark text-light"
+
         futureDayEl.id = "forecast-card";
 
         // date element
