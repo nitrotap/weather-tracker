@@ -24,8 +24,6 @@ searchButtonEl.addEventListener("click", function() {
     }
 
 
-
-
     geoLocateRequest(cityName);
 
 })
@@ -41,6 +39,49 @@ const clearCards = function() {
     }
 }
 
+const cityButtonList = function () {
+    let cityList = JSON.parse(localStorage.getItem("cityList"));
+    let cityButtonDivEl = document.querySelector("#city-list");
+
+
+    if (cityList) {
+        for (let i = 0; i < cityList.length; i++) {
+            let cityButton = document.createElement("button");
+            cityButton.textContent = cityList[i];
+            cityButtonDivEl.appendChild(cityButton);
+            cityButton.addEventListener("click", function () {
+
+                // let cityInputEl = document.querySelector("#cityInput");
+                // let cityName = cityInputEl.value;
+
+                let a = document.getElementById("forecast-card");
+                if (a) {
+                    clearCards();
+                    console.log("hi")
+                }
+                geoLocateRequest(cityList[i]);
+
+            })
+
+        }
+    }
+
+}
+cityButtonList();
+
+const singleCityButton = function(cityName) {
+    let cityButtonDivEl = document.querySelector("#city-list");
+
+    let cityButton = document.createElement("button");
+
+    cityButton.textContent = cityName;
+    cityButtonDivEl.appendChild(cityButton);
+    cityButton.addEventListener("click", function () {
+        geoLocateRequest(cityName);
+    })
+}
+
+
 
 function cityStored(cityName) {
     let cityList = JSON.parse(localStorage.getItem("cityList"));
@@ -53,6 +94,10 @@ function cityStored(cityName) {
         }
         if (!dupCheck) {
             cityList.push(cityName);
+            // todo add button logic
+            // add single button to existing buttons
+            singleCityButton(cityName);
+
         }
     } else {
         cityList = [];
