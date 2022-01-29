@@ -124,45 +124,53 @@ const currentForecast = function (data) {
 
 }
 
-const fiveDayForecast = function(data, i) {
+const fiveDayForecast = function(data) {
     // start with tomorrow
     console.log(data)
-    let futureDayEl = document.querySelector("#day1")
-    // consists of date, icon, temp, wind, humidity
-    // instead of current, it uses daily[0] - today, daily[1] is tomorrow
+    let i = 1;
+    for (let i = 1; i < 6; i++) {
+        // let futureDayEl = document.querySelector("#day1")
+        // consists of date, icon, temp, wind, humidity
+        // instead of current, it uses daily[0] - today, daily[1] is tomorrow
+        let futureDayEl = document.createElement("div");
+        futureDayEl.className = "col-2";
 
-    // date element
-    let date = new Date(data.daily[1].dt * 1000);
-    let formattedDate = date.toLocaleDateString();
-    let dateEl = document.createElement("h4")
-    dateEl.textContent = formattedDate;
-    futureDayEl.appendChild(dateEl);
+        // date element
+        let date = new Date(data.daily[i].dt * 1000);
+        let formattedDate = date.toLocaleDateString();
+        let dateEl = document.createElement("h4")
+        dateEl.textContent = formattedDate;
+        futureDayEl.appendChild(dateEl);
 
-    // icon element
-    let futureIconEl = document.createElement("img")
+        // icon element
+        let futureIconEl = document.createElement("img")
 
-    let iconId = data.daily[1].weather[0].icon;
-    futureIconEl.src = "http://openweathermap.org/img/wn/" +iconId+"@2x.png"
-    futureIconEl.className = "currentIcon";
+        let iconId = data.daily[i].weather[0].icon;
+        futureIconEl.src = "http://openweathermap.org/img/wn/" + iconId + "@2x.png"
+        futureIconEl.className = "currentIcon";
 
-    futureDayEl.appendChild(futureIconEl)
+        futureDayEl.appendChild(futureIconEl)
 
-    let futureTempEl = document.createElement("p")
-    let tempF = data.daily[1].temp.day;
-    futureTempEl.textContent = "Temp: " + Math.round((tempF*100)/100) + "°F";
-    futureDayEl.appendChild(futureTempEl)
+        let futureTempEl = document.createElement("p")
+        let tempF = data.daily[i].temp.day;
+        futureTempEl.textContent = "Temp: " + Math.round((tempF * 100) / 100) + "°F";
+        futureDayEl.appendChild(futureTempEl)
 
-    let futureWindEl = document.createElement("p")
-    let windSpeed = data.daily[1].wind_speed;
-    futureWindEl.textContent = "Wind Speed: " + windSpeed + " mph";
-    futureDayEl.appendChild(futureWindEl)
-
-
-    let futureHumEl = document.createElement("p")
-    futureHumEl.textContent = "Humidity: " + data.daily[1].humidity + "%";
-    futureDayEl.appendChild(futureHumEl)
+        let futureWindEl = document.createElement("p")
+        let windSpeed = data.daily[i].wind_speed;
+        futureWindEl.textContent = "Wind Speed: " + windSpeed + " mph";
+        futureDayEl.appendChild(futureWindEl)
 
 
+        let futureHumEl = document.createElement("p")
+        futureHumEl.textContent = "Humidity: " + data.daily[i].humidity + "%";
+        futureDayEl.appendChild(futureHumEl)
+
+
+        let futureRow = document.querySelector("#forecast-row");
+        futureRow.className = "row d-flex justify-content-between"
+        futureRow.appendChild(futureDayEl);
+    }
 
 }
 
