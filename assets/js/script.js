@@ -3,12 +3,8 @@
  * // make another function - pass json data into it, parse the object
  * // 2api requests, but need to wait until first finishes, then
  *
- * TODO make icon function makeIcon(weatherdata)
- * todo make single day forecast function
- * todo make city buttons list
  * todo add uv index background colors
  *
-
 
  */
 
@@ -17,13 +13,99 @@ let searchButtonEl = document.querySelector("#search-button");
 searchButtonEl.addEventListener("click", function() {
     let cityInputEl = document.querySelector("#cityInput");
     let cityName = cityInputEl.value;
-    geoLocateRequest(cityName);
+
+    if (cityName === "") {
+        window.alert("Please Enter a City Name!")
+    } else {
+        let a = document.getElementById("forecast-card");
+        if (a) {
+            clearCards();
+            console.log("hi")
+        }
+        geoLocateRequest(cityName);
+    }
+
 
 
 })
 
 
-let city;
+const clearCards = function() {
+    // if cards exist, remove them
+    // run this 5 times for cards
+    for (let i = 0; i < 5 ; i++) {
+        let a = document.getElementById("forecast-card");
+        a.remove();
+        console.log(a)
+    }
+}
+
+const cityButtonList = function () {
+    let cityList = JSON.parse(localStorage.getItem("cityList"));
+    let cityButtonDivEl = document.querySelector("#city-list");
+
+
+    if (cityList) {
+        for (let i = 0; i < cityList.length; i++) {
+            let cityButton = document.createElement("button");
+            cityButton.textContent = cityList[i];
+            cityButton.className = "city-button rounded"
+            cityButtonDivEl.appendChild(cityButton);
+            cityButton.addEventListener("click", function () {
+
+                // let cityInputEl = document.querySelector("#cityInput");
+                // let cityName = cityInputEl.value;
+
+                let a = document.getElementById("forecast-card");
+                if (a) {
+                    clearCards();
+                    console.log("hi")
+                }
+                geoLocateRequest(cityList[i]);
+
+            })
+
+        }
+    }
+
+}
+
+const singleCityButton = function(cityName) {
+    let cityButtonDivEl = document.querySelector("#city-list");
+
+    let cityButton = document.createElement("button");
+
+    cityButton.textContent = cityName;
+    cityButtonDivEl.appendChild(cityButton);
+    cityButton.addEventListener("click", function () {
+        geoLocateRequest(cityName);
+    })
+}
+
+
+
+function cityStored(cityName) {
+    let cityList = JSON.parse(localStorage.getItem("cityList"));
+    if (cityList !== null) {
+        let dupCheck = false;
+        for (let i = 0; i < cityList.length; i++) {
+            if (cityList[i] === cityName) {
+                dupCheck = true;
+            }
+        }
+        if (!dupCheck) {
+            cityList.push(cityName);
+            // todo add button logic
+            // add single button to existing buttons
+            singleCityButton(cityName);
+
+        }
+    } else {
+        cityList = [];
+        cityList.push(cityName)
+    }
+    localStorage.setItem("cityList", JSON.stringify(cityList))
+}
 
 // GeoLocation API
 let geoLocateRequest = function(cityName) {
@@ -42,15 +124,14 @@ let geoLocateRequest = function(cityName) {
             // fetchCityWeather(data);
             // console.log(data)
 
-            let cityDivEl = document.querySelector("#current");
-            let cityNameEl = document.createElement("h2")
-            cityNameEl.className = "d-flex justify-content-center align-items-center"
+            let cityNameEl = document.querySelector("#cityName");
             cityNameEl.textContent = data[0].name;
-            cityDivEl.appendChild(cityNameEl)
 
-            fetchCityWeather(data)
-            
-            
+            cityStored(data[0].name);
+
+            fetchCityWeather(data);
+
+
         }).catch(function (error) {
         console.log(error);
     });
@@ -65,16 +146,17 @@ const fetchCityWeather = function(data) {
             if (response.status !== 200) {  // if you get a status code of not 200 (status OK)
                 document.location.replace('./404.html'); // then replace with 404 page
             } else {
-                return response.json(); // returns JSON 
+                return response.json(); // returns JSON
             }})
         .then(function(data) {
             // displaying the data - a new function that shows forecast
             // invoke the show forecast function
             // need the onecall response as json
             // console.log(data)
+
             currentForecast(data);
-            
-            
+            fiveDayForecast(data);
+
 
 
         }).catch(function (error) {
@@ -85,68 +167,100 @@ const fetchCityWeather = function(data) {
 
 
 const currentForecast = function (data) {
-
-    let currentConditionsEl = document.querySelector("#current")
-    let currentConditionsDivEl = document.createElement("div");
-
-
-    let currentConditionsDateIconDivEl = document.createElement("div");
-    currentConditionsDateIconDivEl.className = "d-flex align-items-center justify-content-center"
-
+    // date element
     let date = new Date(data.current.dt * 1000);
     let formattedDate = date.toLocaleDateString();
     // console.log(formattedDate)
-    let currentConditionsDateEl = document.createElement("h3");
+    let currentConditionsDateEl = document.querySelector("#currentDate");
     currentConditionsDateEl.textContent = formattedDate;
-    currentConditionsDateIconDivEl.appendChild(currentConditionsDateEl);
 
-    let currentConditionsIconEl = document.createElement("img");
-    let iconStatus = iconCurrentGenerator(data);
-    currentConditionsIconEl.src = "http://openweathermap.org/img/wn/" +iconStatus+"@2x.png"
+    // icon element
+    let currentConditionsIconEl = document.querySelector("#currentIcon");
+    let iconId = data.current.weather[0].icon;
+    currentConditionsIconEl.src = "http://openweathermap.org/img/wn/" +iconId+"@2x.png"
     currentConditionsIconEl.className = "currentIcon";
-    currentConditionsDateIconDivEl.appendChild(currentConditionsIconEl);
 
-    let currentConditionsStatusEl = document.createElement("h4");
+    // weather description element
+    let currentConditionsStatusEl = document.querySelector("#weatherDesc");
     currentConditionsStatusEl.textContent = data.current.weather[0].description;
-    currentConditionsDateIconDivEl.appendChild(currentConditionsStatusEl);
+    currentConditionsStatusEl.className = "text-center"
 
-    currentConditionsDivEl.appendChild(currentConditionsDateIconDivEl);
-
-    let currentConditionsTempEl = document.createElement("p");
+    // temperature element
+    let currentConditionsTempEl = document.querySelector("#currentTemp");
     let tempF = data.current.temp;
     currentConditionsTempEl.textContent = "Temp: " + Math.round((tempF*100)/100) + "°F";
-    currentConditionsDivEl.appendChild(currentConditionsTempEl);
+    // currentConditionsTempEl.className = "d-flex justify-content-start";
 
-    let currentConditionsWindEl = document.createElement("p")
+    // wind element
+    let currentConditionsWindEl = document.querySelector("#currentWind")
     let windSpeed = data.current.wind_speed;
     // console.log(windSpeed);
     currentConditionsWindEl.textContent = "Wind Speed: " + windSpeed + " mph";
-    currentConditionsDivEl.appendChild(currentConditionsWindEl);
 
-    let currentConditionsHumidityEl = document.createElement("p");
+    // humidity element
+    let currentConditionsHumidityEl = document.querySelector("#currentHumid");
     currentConditionsHumidityEl.textContent = "Humidity: " + data.current.humidity + "%";
     // console.log(data.current.humidity)
-    currentConditionsDivEl.appendChild(currentConditionsHumidityEl)
 
-    let currentConditionsUVEl = document.createElement("p");
+    // uv element
+    let currentConditionsUVEl = document.querySelector("#currentUV");
     currentConditionsUVEl.textContent = "UV Index: " + data.current.uvi;
-    currentConditionsDivEl.appendChild(currentConditionsUVEl);
-    /*
-        console.log(data.current.weather[0].main) // weather status
-        let currentConditions = data.current.weather[0].main;
-     */
-    currentConditionsEl.appendChild(currentConditionsDivEl);
-}
 
-
-const iconCurrentGenerator = function(data) {
-    console.log(data)
-    // parse data for icon id
-    let iconId = data.current.weather[0].icon;
-    console.log(iconId)
-    return iconId;
 }
 
 const fiveDayForecast = function(data) {
+    // start with tomorrow
+    console.log(data)
+    for (let i = 1; i < 6; i++) {
+        // let futureDayEl = document.querySelector("#day1")
+        // consists of date, icon, temp, wind, humidity
+        // instead of current, it uses daily[0] - today, daily[1] is tomorrow
+        let futureDayEl = document.createElement("div");
+        // futureDayEl.className = "col-2 bg-dark text-light"
+        futureDayEl.className = "col-12 col-sm-5 col-lg-2 bg-dark text-light"
+
+        futureDayEl.id = "forecast-card";
+
+        // date element
+        let date = new Date(data.daily[i].dt * 1000);
+        let formattedDate = date.toLocaleDateString();
+        let dateEl = document.createElement("h5");
+        dateEl.textContent = formattedDate;
+        futureDayEl.appendChild(dateEl);
+
+        // icon element
+        let futureIconEl = document.createElement("img")
+
+        let iconId = data.daily[i].weather[0].icon;
+        futureIconEl.src = "http://openweathermap.org/img/wn/" + iconId + "@2x.png"
+        futureIconEl.className = "currentIcon";
+
+        futureDayEl.appendChild(futureIconEl)
+
+        let futureTempEl = document.createElement("p")
+        let tempF = data.daily[i].temp.day;
+        futureTempEl.textContent = "Temp: " + Math.round((tempF * 100) / 100) + "°F";
+        futureDayEl.appendChild(futureTempEl)
+
+        let futureWindEl = document.createElement("p")
+        let windSpeed = data.daily[i].wind_speed;
+        futureWindEl.textContent = "Wind Speed: " + windSpeed + " mph";
+        futureDayEl.appendChild(futureWindEl)
+
+
+        let futureHumEl = document.createElement("p")
+        futureHumEl.textContent = "Humidity: " + data.daily[i].humidity + "%";
+        futureDayEl.appendChild(futureHumEl)
+
+
+        let futureRow = document.querySelector("#forecast-row");
+        futureRow.className = "row d-flex justify-content-between"
+        futureRow.appendChild(futureDayEl);
+    }
 
 }
+
+// on load
+cityButtonList();
+geoLocateRequest("Denver");
+
