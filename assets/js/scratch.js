@@ -3,11 +3,8 @@
  * // make another function - pass json data into it, parse the object
  * // 2api requests, but need to wait until first finishes, then
  *
- * TODO make icon function makeIcon(weatherdata)
- * todo make single day forecast function
- * todo make city buttons list
  * todo add uv index background colors
- * todo add remove function for forecast cards
+ *
 
  */
 

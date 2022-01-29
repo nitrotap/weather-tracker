@@ -2,6 +2,11 @@
     font-size: 3rem;
 }
 
+#current {
+    margin-top: 20px;
+    border: #1a1a1a solid 3px;
+}
+
 .city-button {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -14,6 +19,11 @@
 
 #cityInput {
     width: 100%;
+}
+
+#fiveDay {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 #search-button {
@@ -32,6 +42,10 @@
 #forecast-card {
     margin: 0;
     padding: 5px;
+}
+
+#title {
+    background-image: linear-gradient(to right, dimgrey, darkblue);
 }
 
 /* START footer styles */
