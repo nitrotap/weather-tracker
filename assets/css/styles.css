@@ -1,3 +1,62 @@
 .currentIcon {
     font-size: 3rem;
 }
+
+.city-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.city-button:hover {
+    background-color: #2a607c;
+    color: white;
+}
+
+#cityInput {
+    width: 100%;
+}
+
+#search-button {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: white;
+    background-color: #2a607c;
+}
+
+#search-button:hover {
+    background-color: white;
+    color: #2a607c;
+}
+
+#forecast-card {
+    margin: 0;
+    padding: 5px;
+}
+
+/* START footer styles */
+footer {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-top: 3px solid;
+    border-radius: 0;
+    margin-top: 30px;
+}
+
+footer h4 {
+    color: var(--primary-color);
+    font-size: 30px;
+    margin: 0;
+}
+
+footer div {
+    line-height: 1.5;
+    text-align: right;
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+/* END footer styles */

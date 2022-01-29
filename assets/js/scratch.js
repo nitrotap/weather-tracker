@@ -17,14 +17,18 @@ searchButtonEl.addEventListener("click", function() {
     let cityInputEl = document.querySelector("#cityInput");
     let cityName = cityInputEl.value;
 
-    let a = document.getElementById("forecast-card");
-    if (a) {
-        clearCards();
-        console.log("hi")
+    if (cityName === "") {
+        window.alert("Please Enter a City Name!")
+    } else {
+        let a = document.getElementById("forecast-card");
+        if (a) {
+            clearCards();
+            console.log("hi")
+        }
+        geoLocateRequest(cityName);
     }
 
 
-    geoLocateRequest(cityName);
 
 })
 
@@ -48,6 +52,7 @@ const cityButtonList = function () {
         for (let i = 0; i < cityList.length; i++) {
             let cityButton = document.createElement("button");
             cityButton.textContent = cityList[i];
+            cityButton.className = "city-button rounded"
             cityButtonDivEl.appendChild(cityButton);
             cityButton.addEventListener("click", function () {
 
@@ -67,7 +72,6 @@ const cityButtonList = function () {
     }
 
 }
-cityButtonList();
 
 const singleCityButton = function(cityName) {
     let cityButtonDivEl = document.querySelector("#city-list");
@@ -215,13 +219,13 @@ const fiveDayForecast = function(data) {
         // consists of date, icon, temp, wind, humidity
         // instead of current, it uses daily[0] - today, daily[1] is tomorrow
         let futureDayEl = document.createElement("div");
-        futureDayEl.className = "col-2"
+        futureDayEl.className = "col-2 bg-dark text-light"
         futureDayEl.id = "forecast-card";
 
         // date element
         let date = new Date(data.daily[i].dt * 1000);
         let formattedDate = date.toLocaleDateString();
-        let dateEl = document.createElement("h4");
+        let dateEl = document.createElement("h5");
         dateEl.textContent = formattedDate;
         futureDayEl.appendChild(dateEl);
 
@@ -257,4 +261,7 @@ const fiveDayForecast = function(data) {
 
 }
 
+// on load
+cityButtonList();
+geoLocateRequest("Denver");
 
