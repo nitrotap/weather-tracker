@@ -7,8 +7,7 @@
  * todo make single day forecast function
  * todo make city buttons list
  * todo add uv index background colors
- *
-
+ * todo add remove function for forecast cards
 
  */
 
@@ -17,13 +16,50 @@ let searchButtonEl = document.querySelector("#search-button");
 searchButtonEl.addEventListener("click", function() {
     let cityInputEl = document.querySelector("#cityInput");
     let cityName = cityInputEl.value;
-    geoLocateRequest(cityName);
 
+    let a = document.getElementById("forecast-card");
+    if (a) {
+        clearCards();
+        console.log("hi")
+    }
+
+
+
+
+    geoLocateRequest(cityName);
 
 })
 
 
-let city;
+const clearCards = function() {
+    // if cards exist, remove them
+    // run this 5 times for cards
+    for (let i = 0; i < 5 ; i++) {
+        let a = document.getElementById("forecast-card");
+        a.remove();
+        console.log(a)
+    }
+}
+
+
+function cityStored(cityName) {
+    let cityList = JSON.parse(localStorage.getItem("cityList"));
+    if (cityList !== null) {
+        let dupCheck = false;
+        for (let i = 0; i < cityList.length; i++) {
+            if (cityList[i] === cityName) {
+                dupCheck = true;
+            }
+        }
+        if (!dupCheck) {
+            cityList.push(cityName);
+        }
+    } else {
+        cityList = [];
+        cityList.push(cityName)
+    }
+    localStorage.setItem("cityList", JSON.stringify(cityList))
+}
 
 // GeoLocation API
 let geoLocateRequest = function(cityName) {
@@ -44,6 +80,8 @@ let geoLocateRequest = function(cityName) {
 
             let cityNameEl = document.querySelector("#cityName");
             cityNameEl.textContent = data[0].name;
+
+            cityStored(data[0].name);
 
             fetchCityWeather(data);
 
@@ -69,8 +107,8 @@ const fetchCityWeather = function(data) {
             // invoke the show forecast function
             // need the onecall response as json
             // console.log(data)
-            currentForecast(data);
 
+            currentForecast(data);
             fiveDayForecast(data);
 
 
@@ -127,18 +165,18 @@ const currentForecast = function (data) {
 const fiveDayForecast = function(data) {
     // start with tomorrow
     console.log(data)
-    let i = 1;
     for (let i = 1; i < 6; i++) {
         // let futureDayEl = document.querySelector("#day1")
         // consists of date, icon, temp, wind, humidity
         // instead of current, it uses daily[0] - today, daily[1] is tomorrow
         let futureDayEl = document.createElement("div");
-        futureDayEl.className = "col-2";
+        futureDayEl.className = "col-2"
+        futureDayEl.id = "forecast-card";
 
         // date element
         let date = new Date(data.daily[i].dt * 1000);
         let formattedDate = date.toLocaleDateString();
-        let dateEl = document.createElement("h4")
+        let dateEl = document.createElement("h4");
         dateEl.textContent = formattedDate;
         futureDayEl.appendChild(dateEl);
 
