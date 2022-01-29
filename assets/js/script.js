@@ -1,7 +1,14 @@
 /*
- * js file for location search bar
- *             // make another function - pass json data into it, parse the object
-            // 2api requests, but need to wait until first finishes, then
+ * js file for weather tracker
+ * // make another function - pass json data into it, parse the object
+ * // 2api requests, but need to wait until first finishes, then
+ *
+ * TODO make icon function makeIcon(weatherdata)
+ * todo make single day forecast function
+ * todo make city buttons list
+ * todo add uv index background colors
+ *
+
 
  */
 
@@ -33,10 +40,11 @@ let geoLocateRequest = function(cityName) {
         .then(function (data) {
             // pass data into function parsing the data
             // fetchCityWeather(data);
-            console.log(data)
+            // console.log(data)
 
             let cityDivEl = document.querySelector("#current");
             let cityNameEl = document.createElement("h2")
+            cityNameEl.className = "d-flex justify-content-center align-items-center"
             cityNameEl.textContent = data[0].name;
             cityDivEl.appendChild(cityNameEl)
 
@@ -63,7 +71,7 @@ const fetchCityWeather = function(data) {
             // displaying the data - a new function that shows forecast
             // invoke the show forecast function
             // need the onecall response as json
-            console.log(data)
+            // console.log(data)
             currentForecast(data);
             
             
@@ -81,13 +89,32 @@ const currentForecast = function (data) {
     let currentConditionsEl = document.querySelector("#current")
     let currentConditionsDivEl = document.createElement("div");
 
-    let currentConditionsTempEl = document.createElement("p");
-    let tempF = data.current.temp;
+
+    let currentConditionsDateIconDivEl = document.createElement("div");
+    currentConditionsDateIconDivEl.className = "d-flex align-items-center justify-content-center"
+
     let date = new Date(data.current.dt * 1000);
     let formattedDate = date.toLocaleDateString();
-    console.log(formattedDate)
+    // console.log(formattedDate)
+    let currentConditionsDateEl = document.createElement("h3");
+    currentConditionsDateEl.textContent = formattedDate;
+    currentConditionsDateIconDivEl.appendChild(currentConditionsDateEl);
 
-    currentConditionsTempEl.textContent = "Temp: " + Math.round((tempF*100)/100) + "°F" + "    " + formattedDate;
+    let currentConditionsIconEl = document.createElement("img");
+    let iconStatus = iconCurrentGenerator(data);
+    currentConditionsIconEl.src = "http://openweathermap.org/img/wn/" +iconStatus+"@2x.png"
+    currentConditionsIconEl.className = "currentIcon";
+    currentConditionsDateIconDivEl.appendChild(currentConditionsIconEl);
+
+    let currentConditionsStatusEl = document.createElement("h4");
+    currentConditionsStatusEl.textContent = data.current.weather[0].description;
+    currentConditionsDateIconDivEl.appendChild(currentConditionsStatusEl);
+
+    currentConditionsDivEl.appendChild(currentConditionsDateIconDivEl);
+
+    let currentConditionsTempEl = document.createElement("p");
+    let tempF = data.current.temp;
+    currentConditionsTempEl.textContent = "Temp: " + Math.round((tempF*100)/100) + "°F";
     currentConditionsDivEl.appendChild(currentConditionsTempEl);
 
     let currentConditionsWindEl = document.createElement("p")
@@ -98,28 +125,28 @@ const currentForecast = function (data) {
 
     let currentConditionsHumidityEl = document.createElement("p");
     currentConditionsHumidityEl.textContent = "Humidity: " + data.current.humidity + "%";
-    console.log(data.current.humidity)
+    // console.log(data.current.humidity)
     currentConditionsDivEl.appendChild(currentConditionsHumidityEl)
 
     let currentConditionsUVEl = document.createElement("p");
     currentConditionsUVEl.textContent = "UV Index: " + data.current.uvi;
     currentConditionsDivEl.appendChild(currentConditionsUVEl);
-
-
-
-
-
-
-
     /*
         console.log(data.current.weather[0].main) // weather status
-
         let currentConditions = data.current.weather[0].main;
-    let currentConditionsIconEl = document.createElement("i");
-    currentConditionsIconEl.className = "fas fa-cloud";
-    currentConditionsDivEl.appendChild(currentConditionsIconEl);
      */
     currentConditionsEl.appendChild(currentConditionsDivEl);
+}
 
+
+const iconCurrentGenerator = function(data) {
+    console.log(data)
+    // parse data for icon id
+    let iconId = data.current.weather[0].icon;
+    console.log(iconId)
+    return iconId;
+}
+
+const fiveDayForecast = function(data) {
 
 }
