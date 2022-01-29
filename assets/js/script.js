@@ -76,6 +76,8 @@ const singleCityButton = function(cityName) {
     let cityButton = document.createElement("button");
 
     cityButton.textContent = cityName;
+    cityButton.className = "city-button rounded"
+
     cityButtonDivEl.appendChild(cityButton);
     cityButton.addEventListener("click", function () {
         geoLocateRequest(cityName);
@@ -205,6 +207,13 @@ const currentForecast = function (data) {
     // uv element
     let currentConditionsUVEl = document.querySelector("#currentUV");
     currentConditionsUVEl.textContent = "UV Index: " + data.current.uvi;
+    if (data.current.uvi <= 2) {
+        currentConditionsUVEl.className = "bg-success text-light";
+    } else if (data.current.uvi > 2 && data.current.uvi < 8) {
+        currentConditionsUVEl.className ="bg-warning";
+    } else {
+        currentConditionsUVEl.className = "bg-danger text-light";
+    }
 
 }
 
