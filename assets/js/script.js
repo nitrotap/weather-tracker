@@ -110,7 +110,7 @@ function cityStored(cityName) {
 // GeoLocation API
 let geoLocateRequest = function(cityName) {
     let requestUrl =
-        "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=63fc07461258d8d00c91ca3f94112536";
+        "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=63fc07461258d8d00c91ca3f94112536";
     fetch(requestUrl)
         .then(function (response) { // response is an HTTP response that needs to be converted into JSON
             if (response.status !== 200) {  // if you get a status code of not 200 (status OK)
@@ -177,7 +177,7 @@ const currentForecast = function (data) {
     // icon element
     let currentConditionsIconEl = document.querySelector("#currentIcon");
     let iconId = data.current.weather[0].icon;
-    currentConditionsIconEl.src = "http://openweathermap.org/img/wn/" +iconId+"@2x.png"
+    currentConditionsIconEl.src = "https://openweathermap.org/img/wn/" +iconId+"@2x.png"
     currentConditionsIconEl.className = "currentIcon";
 
     // weather description element
@@ -232,7 +232,7 @@ const fiveDayForecast = function(data) {
         let futureIconEl = document.createElement("img")
 
         let iconId = data.daily[i].weather[0].icon;
-        futureIconEl.src = "http://openweathermap.org/img/wn/" + iconId + "@2x.png"
+        futureIconEl.src = "https://openweathermap.org/img/wn/" + iconId + "@2x.png"
         futureIconEl.className = "currentIcon";
 
         futureDayEl.appendChild(futureIconEl)
