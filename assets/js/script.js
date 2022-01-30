@@ -5,7 +5,7 @@
  *
  */
 
-var token = config.OWM;
+let token = "5eb96c154499a1fafb9d18ac9ab77802";
 let searchButtonEl = document.querySelector("#search-button");
 
 searchButtonEl.addEventListener("click", function() {
