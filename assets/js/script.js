@@ -5,6 +5,7 @@
  *
  */
 
+var token = config.OWM;
 let searchButtonEl = document.querySelector("#search-button");
 
 searchButtonEl.addEventListener("click", function() {
@@ -110,7 +111,7 @@ function cityStored(cityName) {
 // GeoLocation API
 let geoLocateRequest = function(cityName) {
     let requestUrl =
-        "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=63fc07461258d8d00c91ca3f94112536";
+        "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=" + token;
     fetch(requestUrl)
         .then(function (response) { // response is an HTTP response that needs to be converted into JSON
             if (response.status !== 200) {  // if you get a status code of not 200 (status OK)
@@ -140,7 +141,7 @@ let geoLocateRequest = function(cityName) {
 const fetchCityWeather = function(data) {
     let requestUrl =
         "https://api.openweathermap.org/data/2.5/onecall?lat=" + data[0].lat +
-        "&lon="+ data[0].lon + "&units=imperial&appid=63fc07461258d8d00c91ca3f94112536";
+        "&lon="+ data[0].lon + "&units=imperial&appid=" + token;
     fetch(requestUrl)
         .then(function(response) { // response is an HTTP response that needs to be converted into JSON
             if (response.status !== 200) {  // if you get a status code of not 200 (status OK)
